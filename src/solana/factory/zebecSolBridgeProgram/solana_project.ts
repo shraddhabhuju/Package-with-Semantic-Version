@@ -1,0 +1,1153 @@
+export type SolanaProject = {
+	version: "0.1.0";
+	name: "solana_project";
+	instructions: [
+		{
+			name: "initialize";
+			accounts: [
+				{
+					name: "config";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "owner";
+					isMut: true;
+					isSigner: true;
+				},
+				{
+					name: "systemProgram";
+					isMut: false;
+					isSigner: false;
+				},
+			];
+			args: [];
+		},
+		{
+			name: "registerChain";
+			accounts: [
+				{
+					name: "owner";
+					isMut: true;
+					isSigner: true;
+				},
+				{
+					name: "systemProgram";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "config";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "emitterAcc";
+					isMut: true;
+					isSigner: false;
+				},
+			];
+			args: [
+				{
+					name: "chainId";
+					type: "u16";
+				},
+				{
+					name: "emitterAddr";
+					type: "string";
+				},
+			];
+		},
+		{
+			name: "sendMsg";
+			accounts: [
+				{
+					name: "coreBridge";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "wormholeConfig";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "wormholeFeeCollector";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "wormholeDerivedEmitter";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "wormholeSequence";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "wormholeMessageKey";
+					isMut: true;
+					isSigner: true;
+				},
+				{
+					name: "payer";
+					isMut: true;
+					isSigner: true;
+				},
+				{
+					name: "systemProgram";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "clock";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "rent";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "config";
+					isMut: true;
+					isSigner: false;
+				},
+			];
+			args: [
+				{
+					name: "msg";
+					type: "string";
+				},
+			];
+		},
+		{
+			name: "storeMsg";
+			accounts: [
+				{
+					name: "payer";
+					isMut: true;
+					isSigner: true;
+				},
+				{
+					name: "systemProgram";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "processedVaa";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "emitterAcc";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "coreBridgeVaa";
+					isMut: false;
+					isSigner: false;
+					docs: ["This requires some fancy hashing, so confirm it's derived address in the function itself."];
+				},
+				{
+					name: "dataStorage";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "txnCount";
+					isMut: true;
+					isSigner: false;
+				},
+			];
+			args: [
+				{
+					name: "currentCount";
+					type: "u8";
+				},
+				{
+					name: "sender";
+					type: "bytes";
+				},
+			];
+		},
+		{
+			name: "createTransaction";
+			accounts: [
+				{
+					name: "transaction";
+					isMut: true;
+					isSigner: true;
+				},
+				{
+					name: "zebecEoa";
+					isMut: true;
+					isSigner: true;
+				},
+				{
+					name: "systemProgram";
+					isMut: false;
+					isSigner: false;
+				},
+				{
+					name: "dataStorage";
+					isMut: true;
+					isSigner: false;
+				},
+			];
+			args: [
+				{
+					name: "pid";
+					type: "publicKey";
+				},
+				{
+					name: "accs";
+					type: {
+						vec: {
+							defined: "TransactionAccount";
+						};
+					};
+				},
+				{
+					name: "data";
+					type: "bytes";
+				},
+				{
+					name: "currentCount";
+					type: "u8";
+				},
+				{
+					name: "sender";
+					type: "bytes";
+				},
+				{
+					name: "transactionHash";
+					type: "bytes";
+				},
+			];
+		},
+		{
+			name: "executeTransaction";
+			accounts: [
+				{
+					name: "pdaSigner";
+					isMut: true;
+					isSigner: false;
+				},
+				{
+					name: "transaction";
+					isMut: true;
+					isSigner: false;
+				},
+			];
+			args: [
+				{
+					name: "fromChainId";
+					type: "bytes";
+				},
+				{
+					name: "ethAddHash";
+					type: "bytes";
+				},
+			];
+		},
+	];
+	accounts: [
+		{
+			name: "config";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "owner";
+						type: "publicKey";
+					},
+					{
+						name: "nonce";
+						type: "u32";
+					},
+					{
+						name: "currentMsg";
+						type: "bytes";
+					},
+				];
+			};
+		},
+		{
+			name: "emitterAddrAccount";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "chainId";
+						type: "u16";
+					},
+					{
+						name: "emitterAddr";
+						type: "string";
+					},
+				];
+			};
+		},
+		{
+			name: "processedVaa";
+			type: {
+				kind: "struct";
+				fields: [];
+			};
+		},
+		{
+			name: "multisig";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "owners";
+						type: {
+							vec: "publicKey";
+						};
+					},
+					{
+						name: "threshold";
+						type: "u64";
+					},
+					{
+						name: "nonce";
+						type: "u8";
+					},
+					{
+						name: "ownerSetSeqno";
+						type: "u32";
+					},
+				];
+			};
+		},
+		{
+			name: "transaction";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "programId";
+						type: "publicKey";
+					},
+					{
+						name: "accounts";
+						type: {
+							vec: {
+								defined: "TransactionAccount";
+							};
+						};
+					},
+					{
+						name: "data";
+						type: "bytes";
+					},
+					{
+						name: "didExecute";
+						type: "bool";
+					},
+				];
+			};
+		},
+		{
+			name: "transactionData";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "transactionHash";
+						type: {
+							array: ["u8", 32];
+						};
+					},
+				];
+			};
+		},
+		{
+			name: "count";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "count";
+						type: "u8";
+					},
+				];
+			};
+		},
+	];
+	types: [
+		{
+			name: "TransactionAccount";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "pubkey";
+						type: "publicKey";
+					},
+					{
+						name: "isSigner";
+						type: "bool";
+					},
+					{
+						name: "isWritable";
+						type: "bool";
+					},
+				];
+			};
+		},
+		{
+			name: "PostMessageData";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "nonce";
+						docs: ["Unique nonce for this message"];
+						type: "u32";
+					},
+					{
+						name: "payload";
+						docs: ["Message payload"];
+						type: "bytes";
+					},
+					{
+						name: "consistencyLevel";
+						docs: ["Commitment Level required for an attestation to be produced"];
+						type: {
+							defined: "ConsistencyLevel";
+						};
+					},
+				];
+			};
+		},
+		{
+			name: "BridgeData";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "guardianSetIndex";
+						docs: ["The current guardian set index, used to decide which signature sets to accept."];
+						type: "u32";
+					},
+					{
+						name: "lastLamports";
+						docs: ["Lamports in the collection account"];
+						type: "u64";
+					},
+					{
+						name: "config";
+						docs: ["Bridge configuration, which is set once upon initialization."];
+						type: {
+							defined: "BridgeConfig";
+						};
+					},
+				];
+			};
+		},
+		{
+			name: "BridgeConfig";
+			type: {
+				kind: "struct";
+				fields: [
+					{
+						name: "guardianSetExpirationTime";
+						docs: [
+							"Period for how long a guardian set is valid after it has been replaced by a new one.  This",
+							"guarantees that VAAs issued by that set can still be submitted for a certain period.  In",
+							"this period we still trust the old guardian set.",
+						];
+						type: "u32";
+					},
+					{
+						name: "fee";
+						docs: ["Amount of lamports that needs to be paid to the protocol to post a message"];
+						type: "u64";
+					},
+				];
+			};
+		},
+		{
+			name: "ConsistencyLevel";
+			type: {
+				kind: "enum";
+				variants: [
+					{
+						name: "Confirmed";
+					},
+					{
+						name: "Finalized";
+					},
+				];
+			};
+		},
+		{
+			name: "Instruction";
+			type: {
+				kind: "enum";
+				variants: [
+					{
+						name: "Initialize";
+					},
+					{
+						name: "PostMessage";
+					},
+					{
+						name: "PostVAA";
+					},
+					{
+						name: "SetFees";
+					},
+					{
+						name: "TransferFees";
+					},
+					{
+						name: "UpgradeContract";
+					},
+					{
+						name: "UpgradeGuardianSet";
+					},
+					{
+						name: "VerifySignatures";
+					},
+				];
+			};
+		},
+	];
+	errors: [
+		{
+			code: 6000;
+			name: "VAAKeyMismatch";
+			msg: "Posted VAA Key Mismatch";
+		},
+		{
+			code: 6001;
+			name: "VAAEmitterMismatch";
+			msg: "Posted VAA Emitter Chain ID or Address Mismatch";
+		},
+		{
+			code: 6002;
+			name: "InvalidOwner";
+			msg: "The given owner is not part of this multisig.";
+		},
+		{
+			code: 6003;
+			name: "AlreadyExecuted";
+			msg: "The given transaction has already been executed.";
+		},
+		{
+			code: 6004;
+			name: "NotEnoughSigners";
+			msg: "Not enough owners signed this transaction.";
+		},
+		{
+			code: 6005;
+			name: "InvalidPDASigner";
+			msg: "The given PDA Signer is invalid for the current transation. ";
+		},
+		{
+			code: 6006;
+			name: "InvalidThreshold";
+			msg: "Threshold must be less than or equal to the number of owners.";
+		},
+		{
+			code: 6007;
+			name: "InvalidOwnersLen";
+			msg: "Invalid leng.";
+		},
+		{
+			code: 6008;
+			name: "UniqueOwners";
+			msg: "Not unique.";
+		},
+		{
+			code: 6009;
+			name: "InvalidDataProvided";
+			msg: "Data differs from the Wormhole and Client Side.";
+		},
+	];
+};
+
+export const IDL: SolanaProject = {
+	version: "0.1.0",
+	name: "solana_project",
+	instructions: [
+		{
+			name: "initialize",
+			accounts: [
+				{
+					name: "config",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "owner",
+					isMut: true,
+					isSigner: true,
+				},
+				{
+					name: "systemProgram",
+					isMut: false,
+					isSigner: false,
+				},
+			],
+			args: [],
+		},
+		{
+			name: "registerChain",
+			accounts: [
+				{
+					name: "owner",
+					isMut: true,
+					isSigner: true,
+				},
+				{
+					name: "systemProgram",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "config",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "emitterAcc",
+					isMut: true,
+					isSigner: false,
+				},
+			],
+			args: [
+				{
+					name: "chainId",
+					type: "u16",
+				},
+				{
+					name: "emitterAddr",
+					type: "string",
+				},
+			],
+		},
+		{
+			name: "sendMsg",
+			accounts: [
+				{
+					name: "coreBridge",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "wormholeConfig",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "wormholeFeeCollector",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "wormholeDerivedEmitter",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "wormholeSequence",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "wormholeMessageKey",
+					isMut: true,
+					isSigner: true,
+				},
+				{
+					name: "payer",
+					isMut: true,
+					isSigner: true,
+				},
+				{
+					name: "systemProgram",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "clock",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "rent",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "config",
+					isMut: true,
+					isSigner: false,
+				},
+			],
+			args: [
+				{
+					name: "msg",
+					type: "string",
+				},
+			],
+		},
+		{
+			name: "storeMsg",
+			accounts: [
+				{
+					name: "payer",
+					isMut: true,
+					isSigner: true,
+				},
+				{
+					name: "systemProgram",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "processedVaa",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "emitterAcc",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "coreBridgeVaa",
+					isMut: false,
+					isSigner: false,
+					docs: ["This requires some fancy hashing, so confirm it's derived address in the function itself."],
+				},
+				{
+					name: "dataStorage",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "txnCount",
+					isMut: true,
+					isSigner: false,
+				},
+			],
+			args: [
+				{
+					name: "currentCount",
+					type: "u8",
+				},
+				{
+					name: "sender",
+					type: "bytes",
+				},
+			],
+		},
+		{
+			name: "createTransaction",
+			accounts: [
+				{
+					name: "transaction",
+					isMut: true,
+					isSigner: true,
+				},
+				{
+					name: "zebecEoa",
+					isMut: true,
+					isSigner: true,
+				},
+				{
+					name: "systemProgram",
+					isMut: false,
+					isSigner: false,
+				},
+				{
+					name: "dataStorage",
+					isMut: true,
+					isSigner: false,
+				},
+			],
+			args: [
+				{
+					name: "pid",
+					type: "publicKey",
+				},
+				{
+					name: "accs",
+					type: {
+						vec: {
+							defined: "TransactionAccount",
+						},
+					},
+				},
+				{
+					name: "data",
+					type: "bytes",
+				},
+				{
+					name: "currentCount",
+					type: "u8",
+				},
+				{
+					name: "sender",
+					type: "bytes",
+				},
+				{
+					name: "transactionHash",
+					type: "bytes",
+				},
+			],
+		},
+		{
+			name: "executeTransaction",
+			accounts: [
+				{
+					name: "pdaSigner",
+					isMut: true,
+					isSigner: false,
+				},
+				{
+					name: "transaction",
+					isMut: true,
+					isSigner: false,
+				},
+			],
+			args: [
+				{
+					name: "fromChainId",
+					type: "bytes",
+				},
+				{
+					name: "ethAddHash",
+					type: "bytes",
+				},
+			],
+		},
+	],
+	accounts: [
+		{
+			name: "config",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "owner",
+						type: "publicKey",
+					},
+					{
+						name: "nonce",
+						type: "u32",
+					},
+					{
+						name: "currentMsg",
+						type: "bytes",
+					},
+				],
+			},
+		},
+		{
+			name: "emitterAddrAccount",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "chainId",
+						type: "u16",
+					},
+					{
+						name: "emitterAddr",
+						type: "string",
+					},
+				],
+			},
+		},
+		{
+			name: "processedVaa",
+			type: {
+				kind: "struct",
+				fields: [],
+			},
+		},
+		{
+			name: "multisig",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "owners",
+						type: {
+							vec: "publicKey",
+						},
+					},
+					{
+						name: "threshold",
+						type: "u64",
+					},
+					{
+						name: "nonce",
+						type: "u8",
+					},
+					{
+						name: "ownerSetSeqno",
+						type: "u32",
+					},
+				],
+			},
+		},
+		{
+			name: "transaction",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "programId",
+						type: "publicKey",
+					},
+					{
+						name: "accounts",
+						type: {
+							vec: {
+								defined: "TransactionAccount",
+							},
+						},
+					},
+					{
+						name: "data",
+						type: "bytes",
+					},
+					{
+						name: "didExecute",
+						type: "bool",
+					},
+				],
+			},
+		},
+		{
+			name: "transactionData",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "transactionHash",
+						type: {
+							array: ["u8", 32],
+						},
+					},
+				],
+			},
+		},
+		{
+			name: "count",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "count",
+						type: "u8",
+					},
+				],
+			},
+		},
+	],
+	types: [
+		{
+			name: "TransactionAccount",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "pubkey",
+						type: "publicKey",
+					},
+					{
+						name: "isSigner",
+						type: "bool",
+					},
+					{
+						name: "isWritable",
+						type: "bool",
+					},
+				],
+			},
+		},
+		{
+			name: "PostMessageData",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "nonce",
+						docs: ["Unique nonce for this message"],
+						type: "u32",
+					},
+					{
+						name: "payload",
+						docs: ["Message payload"],
+						type: "bytes",
+					},
+					{
+						name: "consistencyLevel",
+						docs: ["Commitment Level required for an attestation to be produced"],
+						type: {
+							defined: "ConsistencyLevel",
+						},
+					},
+				],
+			},
+		},
+		{
+			name: "BridgeData",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "guardianSetIndex",
+						docs: ["The current guardian set index, used to decide which signature sets to accept."],
+						type: "u32",
+					},
+					{
+						name: "lastLamports",
+						docs: ["Lamports in the collection account"],
+						type: "u64",
+					},
+					{
+						name: "config",
+						docs: ["Bridge configuration, which is set once upon initialization."],
+						type: {
+							defined: "BridgeConfig",
+						},
+					},
+				],
+			},
+		},
+		{
+			name: "BridgeConfig",
+			type: {
+				kind: "struct",
+				fields: [
+					{
+						name: "guardianSetExpirationTime",
+						docs: [
+							"Period for how long a guardian set is valid after it has been replaced by a new one.  This",
+							"guarantees that VAAs issued by that set can still be submitted for a certain period.  In",
+							"this period we still trust the old guardian set.",
+						],
+						type: "u32",
+					},
+					{
+						name: "fee",
+						docs: ["Amount of lamports that needs to be paid to the protocol to post a message"],
+						type: "u64",
+					},
+				],
+			},
+		},
+		{
+			name: "ConsistencyLevel",
+			type: {
+				kind: "enum",
+				variants: [
+					{
+						name: "Confirmed",
+					},
+					{
+						name: "Finalized",
+					},
+				],
+			},
+		},
+		{
+			name: "Instruction",
+			type: {
+				kind: "enum",
+				variants: [
+					{
+						name: "Initialize",
+					},
+					{
+						name: "PostMessage",
+					},
+					{
+						name: "PostVAA",
+					},
+					{
+						name: "SetFees",
+					},
+					{
+						name: "TransferFees",
+					},
+					{
+						name: "UpgradeContract",
+					},
+					{
+						name: "UpgradeGuardianSet",
+					},
+					{
+						name: "VerifySignatures",
+					},
+				],
+			},
+		},
+	],
+	errors: [
+		{
+			code: 6000,
+			name: "VAAKeyMismatch",
+			msg: "Posted VAA Key Mismatch",
+		},
+		{
+			code: 6001,
+			name: "VAAEmitterMismatch",
+			msg: "Posted VAA Emitter Chain ID or Address Mismatch",
+		},
+		{
+			code: 6002,
+			name: "InvalidOwner",
+			msg: "The given owner is not part of this multisig.",
+		},
+		{
+			code: 6003,
+			name: "AlreadyExecuted",
+			msg: "The given transaction has already been executed.",
+		},
+		{
+			code: 6004,
+			name: "NotEnoughSigners",
+			msg: "Not enough owners signed this transaction.",
+		},
+		{
+			code: 6005,
+			name: "InvalidPDASigner",
+			msg: "The given PDA Signer is invalid for the current transation. ",
+		},
+		{
+			code: 6006,
+			name: "InvalidThreshold",
+			msg: "Threshold must be less than or equal to the number of owners.",
+		},
+		{
+			code: 6007,
+			name: "InvalidOwnersLen",
+			msg: "Invalid leng.",
+		},
+		{
+			code: 6008,
+			name: "UniqueOwners",
+			msg: "Not unique.",
+		},
+		{
+			code: 6009,
+			name: "InvalidDataProvided",
+			msg: "Data differs from the Wormhole and Client Side.",
+		},
+	],
+};
