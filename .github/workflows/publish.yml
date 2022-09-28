@@ -7,9 +7,9 @@ on:
     branches: '*'
 
 jobs:
-  quality:
+  build:
 
-    runs-on:latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -22,12 +22,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    # - run: npm test
+    - run: npm test
   
   publish:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
-    needs: [quality]
+    needs: [build]
     steps: 
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
