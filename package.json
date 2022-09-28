@@ -15,7 +15,7 @@
     "format": "prettier --write .",
     "start": "npm run format && ts-node ./src",
     "test": "export NODE_ENV=test; mocha --bail --timeout=300000 --check-leaks -r tsconfig-paths/register -r ts-node/register \"./test/**/*.spec.ts\"",
-    "semantic-release": "semantic-release",
+    "semantic-release": "semantic-release --branches main",
     "commit": "git-cz"
   },
   "keywords": [
