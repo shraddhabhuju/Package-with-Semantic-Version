@@ -3,7 +3,7 @@ import { ContractReceipt } from "ethers";
 
 export interface IZebecEthBridgeClient {
 	/**
-	 * zebec evm bridge contract address
+	 * zebec evm bridge contract address new addition 
 	 */
 	contractAddress: string;
 
